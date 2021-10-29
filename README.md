@@ -1,3 +1,14 @@
+
+## Mandatory third party installs for the project build
+
+### `npm install react-router-dom@5`
+
+Installs react-router-dom package version 5. Check in package.json file for the row stating: react-router-dom": "^5.3.0"
+
+### `npm install bootstrap`
+
+Installs bootstrap package. Check in package.json file for the row stating: bootstrap": "^5.1.3"
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
