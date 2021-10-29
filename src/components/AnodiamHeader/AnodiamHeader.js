@@ -1,9 +1,15 @@
+import './AnodiamHeader.css';
 import AnodiamNavbar from "./AnodiamNavbar/AnodiamNavbar";
 
 const AnodiamHeader = () => {
   return (
-    <div id="anodiam-header">
-      <AnodiamNavbar />
+    <div>
+      <div className="App anodiam-gradiant-background">
+        <div className="anodiam-container">
+          <div className="punch-line">Genuine Education</div>
+          <AnodiamNavbar />
+        </div>
+        </div>
     </div>
   );
 }

@@ -5,13 +5,259 @@
   font-family: "Quicksand";
   color: #333;
 }
-
 .anodiam-gradiant-background {
-  background-image: linear-gradient(#bfdfff 25%, #fff 50%);
+  background-image: linear-gradient(#3f9fff, #fff 70%);
+  min-width: 400px;
 }
-
 .anodiam-container {
-  padding-top: 20px;
   margin: auto;
   width: 90%;
+  min-width: 400px;
+  max-width: 800px;
+  margin-bottom: 20px;
+}
+
+.anodiam-body-panel {
+  border-radius: 10px;
+  border: 1px solid #00bfff;
+}
+.anodiam-body-panel-top h2 {
+  color: #0f5fbf;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  margin: 20px;
+}
+.anodiam-body-panel-bottom h6 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #0f5fbf;
+  text-align: center;
+  margin: 20px;
+}
+.anodiam-body-panel-bottom a {
+  text-decoration: underline;
+  font-weight: 500;
+  color: #3f9fff;
+  padding: 6px;
+}
+.anodiam-body-panel-bottom a:hover {
+  color: #00ff5f;
+}
+
+.anodiam-body-panel-mid {
+  max-width: 500px;
+  margin: auto;
+}
+
+.mandatory {
+  color: #ff5f00;
+}
+.anodiam-form {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.anodiam-form label {
+  font-size: small;
+  text-align: left;
+  display: block;
+}
+.anodiam-form input,
+.anodiam-form textarea,
+.anodiam-form select {
+  width: 100%;
+  padding: 4px;
+  margin: 0 0 10px 0;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  display: block;
+}
+.anodiam-form input:focus,
+.anodiam-form textarea:focus {
+  background-color: #f4fcff;
+  border: 1px solid #fff;
+  box-shadow: #00bfff;
+}
+.anodiam-form button {
+  background: #3f9fff;
+  color: #fff;
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+/* The container */
+.anodiam-form-container {
+  display: block;
+  position: relative;
+  padding-left: 20px;
+  margin: 6px 0;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.anodiam-form-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.anodiam-form-checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.anodiam-form-container:hover input ~ .anodiam-form-checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.anodiam-form-container input:checked ~ .anodiam-form-checkmark {
+  background-color: #2196f3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.anodiam-form-checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.anodiam-form-container input:checked ~ .anodiam-form-checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.anodiam-form-container .anodiam-form-checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.indicator {
+  height: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+  margin-bottom: 12px;
+  display: none;
+}
+
+.indicator span {
+  width: 100%;
+  height: 100%;
+  background: lightgrey;
+  border-radius: 5px;
+  position: relative;
+}
+
+.indicator span.medium {
+  margin: 0 5px;
+}
+
+.indicator span:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.indicator span.active.weak:before {
+  background-color: #ff4757;
+}
+
+.indicator span.active.medium:before {
+  background-color: orange;
+}
+
+.indicator span.active.strong:before {
+  background-color: #23ad5c;
+}
+
+.text {
+  font-size: 11px;
+  font-weight: 100;
+  margin-top: -10px;
+  display: none;
+}
+
+.text.weak {
+  color: #ff4757;
+}
+
+.text.medium {
+  color: orange;
+}
+
+.text.strong {
+  color: #23ad5c;
+}
+
+.matchIndicator {
+  height: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+  display: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+  display: none;
+}
+
+.matchIndicator span {
+  width: 100%;
+  height: 100%;
+  background: lightgrey;
+  margin-top: -4px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.matchIndicator span.medium {
+  margin: 0 5px;
+}
+
+.matchIndicator span:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin-top: -4px;
+  border-radius: 5px;
+}
+
+.matchIndicator span.active.wrong:before {
+  background-color: #ff4757;
 }

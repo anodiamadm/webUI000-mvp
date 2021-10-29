@@ -1,25 +1,22 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import AnodiamBody from './components/AnodiamBody/AnodiamBody';
 import AnodiamFooter from './components/AnodiamFooter/AnodiamFooter';
 import AnodiamHeader from './components/AnodiamHeader/AnodiamHeader';
+import AnodiamLogin from './components/AnodiamLogin/AnodiamLogin';
+import AnodiamRegister from './components/AnodiamRegister/AnodiamRegister';
 
 function App() {
   return (
     <Router>
-      <div className="App anodiam-gradiant-background">
-        <div className="anodiam-container">
-          <AnodiamHeader />
-          {/* <AnodiamHeader /> */}
-          <div className="anodiam-content">
-            <Switch>
-              <Route exact path="/">
-                <AnodiamBody />
-              </Route>
-            </Switch>
-          </div>
-          <AnodiamFooter />
-        </div>
-      </div>
+      <AnodiamHeader />
+      <Switch>
+        <Route exact path="/">
+          <AnodiamLogin />
+        </Route>
+        <Route exact path="/register">
+          <AnodiamRegister />
+        </Route>
+      </Switch>
+      <AnodiamFooter />
     </Router>
   );
 }
