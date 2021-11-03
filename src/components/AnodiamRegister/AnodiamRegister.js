@@ -41,13 +41,13 @@ const AnodiamRegister = () => {
       errFlag = true;
     }
     if (password!==confirmPassword) {
-      setErrorConfPassword('Does not match with password!');
+      setErrorConfPassword('Does not match with password');
       errFlag = true;
     }
-    if (password.length<8 || password.length>20 || password.includes(username)
+    if (password.length<8 || password.length>20 || password.includes(username) || password.includes(email)
                             || !(/[a-z]/.test(password)) || !(/[A-Z]/.test(password))
                             || !(/[0-9]/.test(password)) || !(/[@#$%^&+=]/.test(password))) {
-      setErrorWeekPassword('Must be 8-20 characters long containing [a-z], [A-Z], [0-9], [@,#,$,%,^,&,+,=] but NOT your username');
+      setErrorWeekPassword('Must be 8-20 characters long containing [a-z], [A-Z], [0-9], [@,#,$,%,^,&,+,=] but NOT your username or email');
       errFlag = true;
     }
     if(errFlag === false)
@@ -91,7 +91,7 @@ const AnodiamRegister = () => {
                   onCut={stopChange} onCopy={stopChange} onPaste={stopChange}
                 />
                 
-                <PasswordStrengthMeter password={password} username={username} />
+                <PasswordStrengthMeter password={password} username={username} email={email} />
                 
                 <label className="anodiam-form-container">Show Password
                 <input type="checkbox" onClick={toggleShowHidePassword} />

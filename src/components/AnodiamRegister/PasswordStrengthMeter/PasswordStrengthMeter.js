@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PasswordStrengthMeter = ({ password, username }) => {
+const PasswordStrengthMeter = ({ password, username, email }) => {
 
   let passwordStrength = 0;
 
@@ -9,8 +9,8 @@ const PasswordStrengthMeter = ({ password, username }) => {
     if (password.length>=8 && password.length<=20) {
       ++passwordStrength;
     }
-    // 2. Does NOT contain the username string
-    if (!password.includes(username)) {
+    // 2. Does NOT contain the username or email string
+    if (!password.includes(username) && !password.includes(email)) {
       ++passwordStrength;
     }
     // 3. contain at least one small alphabet (a-z), one CAPS alphabet (A-Z) and one numeral (0-9)
