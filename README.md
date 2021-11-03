@@ -1,3 +1,6 @@
+## HTTPS
+
+In the .env file set HTTPS=true and follow OS specific instructions at https://github.com/FiloSottile/mkcert
 
 ## Mandatory third party installs for the project build
 

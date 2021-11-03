@@ -10,6 +10,10 @@ const AnodiamLogin = () => {
   const [loginError, setLoginError] = useState(null);
   const history = useHistory();
 
+  const stopChange = (e) => {
+    e.preventDefault();
+  };
+
   const toggleShowHidePassword = (e) => {
     if(document.getElementById("password").type==="password") {
       document.getElementById("password").type="text";
@@ -22,12 +26,10 @@ const AnodiamLogin = () => {
     e.preventDefault();
     setIsPending(true);
     setLoginError(null);
-    console.log('Proceed to POST userid / password to log in:');
     if(username==='anirban123' && password==='anirban@123') {
-      console.log('Upon success,go to profile page');
+      history.push('/home');
     } else {
       setLoginError('Wrong username or password');
-      history.push('/');
     }
     setIsPending(false);
     // const blog = { username, email, password };
@@ -57,12 +59,14 @@ const AnodiamLogin = () => {
                 <input
                   type="text" required value={username} 
                   onChange={(e) => setUsername(e.target.value)} className="form-control" 
+                  onCut={stopChange} onCopy={stopChange} onPaste={stopChange}
                 />
                 
                 <label>Password:</label>
                 <input
                   id="password" type="password" required value={password}
                   onChange={(e) => setPassword(e.target.value)} className="form-control" 
+                  onCut={stopChange} onCopy={stopChange} onPaste={stopChange}
                 />
 
                 <label className="anodiam-form-container">Show Password

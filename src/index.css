@@ -28,6 +28,13 @@
   text-align: center;
   margin: 20px;
 }
+.anodiam-body-panel-top h1 {
+  color: #ff3f3f;
+  font-size: 45px;
+  font-weight: 600;
+  text-align: center;
+  margin: 150px;
+}
 .anodiam-body-panel-bottom h6 {
   font-size: 14px;
   font-weight: 500;

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useState } from "react/cjs/react.development";
-import 'bootstrap/dist/css/bootstrap.min.css'
 import PasswordStrengthMeter from "./PasswordStrengthMeter/PasswordStrengthMeter";
 
 const AnodiamRegister = () => {
@@ -16,6 +15,10 @@ const AnodiamRegister = () => {
   const [isPending, setIsPending] = useState(false);
   const history = useHistory();
   let errFlag = false;
+
+  const stopChange = (e) => {
+    e.preventDefault();
+  };
   
   const toggleShowHidePassword = (e) => {
     if(document.getElementById("regoPassword").type==="password") {
@@ -69,20 +72,23 @@ const AnodiamRegister = () => {
                 { errorShortUsername && <span className="mandatory">&nbsp;&nbsp;{ errorShortUsername }</span> }</label>
                 <input
                   className="form-control" type="text" required value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={(e) => setUsername(e.target.value)} 
+                  onCut={stopChange} onCopy={stopChange} onPaste={stopChange}
                 />
             
                 <label><span className="mandatory">*</span>&nbsp;Email:</label>
                 <input
                   className="form-control" type="email" required value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)} 
+                  onCut={stopChange} onCopy={stopChange} onPaste={stopChange}
                 />
                 
                 <label><span className="mandatory">*</span>&nbsp;Password:
                 { errorWeekPassword && <span className="mandatory">&nbsp;&nbsp;{ errorWeekPassword }</span> }</label>
                 <input 
                   className="form-control" type="password" id="regoPassword"
-                  required value={password} onChange={(e) => setPassword(e.target.value)}
+                  required value={password} onChange={(e) => setPassword(e.target.value)} 
+                  onCut={stopChange} onCopy={stopChange} onPaste={stopChange}
                 />
                 
                 <PasswordStrengthMeter password={password} username={username} />
@@ -95,7 +101,9 @@ const AnodiamRegister = () => {
                 { errorConfPassword && <span className="mandatory">&nbsp;&nbsp;{ errorConfPassword }</span> }</label>
                 <input
                   className="form-control" type="password" id="confPassword"
-                  required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                  required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} 
+                  onCut={stopChange} onCopy={stopChange} onPaste={stopChange}
+                />
                 
                 { !isPending && <button>Register New User</button> }
                 { isPending && <button disabled>Registering {username}...</button> }
