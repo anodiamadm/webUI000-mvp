@@ -46,7 +46,7 @@ const PasswordStrengthMeter = ({ password, username, email }) => {
   });
 
   return (
-    <div className="progress" style={{ height: '4px' }}>
+    <div className="progress" style={{ height: '4px', margin: '0 0 5px'}}>
       <div className="progress-bar" style={changePasswordColor(password)}></div>
     </div>
   )

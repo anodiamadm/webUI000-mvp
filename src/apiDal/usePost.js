@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const usePut = (url) => {
+const usePost = (url) => {
 
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(true);
@@ -36,4 +36,4 @@ const usePut = (url) => {
   return { data, isPending, error };
 }
  
-export default usePut;
+export default usePost;

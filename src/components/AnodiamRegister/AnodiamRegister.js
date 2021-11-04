@@ -13,8 +13,12 @@ const AnodiamRegister = () => {
   const [errorShortUsername, setErrorShortUsername] = useState(null);
   const [errorWeekPassword, setErrorWeekPassword] = useState(null);
   const [isPending, setIsPending] = useState(false);
+  const [messageResponse, setMessageResponse] = useState('');
+  const [studentToSave, setStudentToSave] = useState('');
+  const [savedStudent, setSavedStudent] = useState('');
   const history = useHistory();
   let errFlag = false;
+  let url = '';
 
   const stopChange = (e) => {
     e.preventDefault();
@@ -52,11 +56,21 @@ const AnodiamRegister = () => {
     }
     if(errFlag === false)
     {
-      console.log('Proceed to save Rego Data');
+      setStudentToSave({ username, password, email });
+      url = 'http://localhost:8000/students';
+      setMessageResponse({code:5, message:"Failyre Bull Sh#t"});
+      setSavedStudent({studentToSave, messageResponse});
+      // fetch('http://localhost:8000/students', {
+      //   method: 'POST',
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(newStudent)
+      // }).then(() => {
+      //   // Grab inserted student object, grab it's message response field and setMessageResponse
+      // })
     }
-    errFlag = false;
-    setIsPending(false);
     history.push('/register');
+    setIsPending(false);
+    errFlag = false;
   };
 
   return (
@@ -68,6 +82,14 @@ const AnodiamRegister = () => {
           <div className="anodiam-body-panel-mid">
             <form className="anodiam-form" onSubmit={handleSubmit}>
               <div className="container anodiam-container">
+                
+                { (messageResponse.code===0) && <div className="success-message">{ messageResponse.message }</div> }
+                { (messageResponse.code!==0) && <div className="mandatory">{ messageResponse.message }</div> }
+
+                <div>Saving: {studentToSave} at {url} by POST</div><br />
+                <div>messageResponse: {messageResponse}</div><br />
+                <div>savedStudent: {savedStudent}</div>
+
                 <label><span className="mandatory">*</span>&nbsp;Username:
                 { errorShortUsername && <span className="mandatory">&nbsp;&nbsp;{ errorShortUsername }</span> }</label>
                 <input
@@ -93,10 +115,6 @@ const AnodiamRegister = () => {
                 
                 <PasswordStrengthMeter password={password} username={username} email={email} />
                 
-                <label className="anodiam-form-container">Show Password
-                <input type="checkbox" onClick={toggleShowHidePassword} />
-                <span className="anodiam-form-checkmark"></span></label>
-                
                 <label><span className="mandatory">*</span>&nbsp;Confirm Password:
                 { errorConfPassword && <span className="mandatory">&nbsp;&nbsp;{ errorConfPassword }</span> }</label>
                 <input
@@ -105,6 +123,10 @@ const AnodiamRegister = () => {
                   onCut={stopChange} onCopy={stopChange} onPaste={stopChange}
                 />
                 
+                <label className="anodiam-form-container">Show Password
+                <input type="checkbox" onClick={toggleShowHidePassword} />
+                <span className="anodiam-form-checkmark"></span></label>
+                                
                 { !isPending && <button>Register New User</button> }
                 { isPending && <button disabled>Registering {username}...</button> }
               </div>
