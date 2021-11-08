@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
-import { useState } from "react/cjs/react.development";
+import { useState } from "react";
 import PasswordStrengthMeter from "./PasswordStrengthMeter/PasswordStrengthMeter";
 
 const AnodiamRegister = () => {
@@ -13,12 +13,11 @@ const AnodiamRegister = () => {
   const [errorShortUsername, setErrorShortUsername] = useState(null);
   const [errorWeekPassword, setErrorWeekPassword] = useState(null);
   const [isPending, setIsPending] = useState(false);
-  const [messageResponse, setMessageResponse] = useState('');
-  const [studentToSave, setStudentToSave] = useState('');
-  const [savedStudent, setSavedStudent] = useState('');
+  const [response, setResponse] = useState({code:-1, message:"none"});
+      
   const history = useHistory();
   let errFlag = false;
-  let url = '';
+  const url = 'http://localhost:8444/api/public/student-signup';
 
   const stopChange = (e) => {
     e.preventDefault();
@@ -56,17 +55,21 @@ const AnodiamRegister = () => {
     }
     if(errFlag === false)
     {
-      setStudentToSave({ username, password, email });
-      url = 'http://localhost:8000/students';
-      setMessageResponse({code:5, message:"Failyre Bull Sh#t"});
-      setSavedStudent({studentToSave, messageResponse});
-      // fetch('http://localhost:8000/students', {
-      //   method: 'POST',
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(newStudent)
-      // }).then(() => {
-      //   // Grab inserted student object, grab it's message response field and setMessageResponse
-      // })
+      const studentToSave = {username, email, password }
+      fetch(url, {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(studentToSave)
+      }).then((res) => {
+        if(!res.ok){
+          
+        }
+        return res.json();
+      }).then((data) => {
+        setResponse(data);
+      }).catch((error) => {
+        console.log(error.message, error.code);
+      });
     }
     history.push('/register');
     setIsPending(false);
@@ -83,12 +86,8 @@ const AnodiamRegister = () => {
             <form className="anodiam-form" onSubmit={handleSubmit}>
               <div className="container anodiam-container">
                 
-                { (messageResponse.code===0) && <div className="success-message">{ messageResponse.message }</div> }
-                { (messageResponse.code!==0) && <div className="mandatory">{ messageResponse.message }</div> }
-
-                <div>Saving: {studentToSave} at {url} by POST</div><br />
-                <div>messageResponse: {messageResponse}</div><br />
-                <div>savedStudent: {savedStudent}</div>
+                { (response.code===0) && <div className="success-message">{ response.message }</div> }
+                { (response.code>0) && <div className="mandatory">{ response.message }</div> }
 
                 <label><span className="mandatory">*</span>&nbsp;Username:
                 { errorShortUsername && <span className="mandatory">&nbsp;&nbsp;{ errorShortUsername }</span> }</label>

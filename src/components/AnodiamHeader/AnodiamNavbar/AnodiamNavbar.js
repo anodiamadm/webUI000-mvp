@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import './AnodiamNavbar.css';
 
-const AnodiamNavbar = () => {
+const AnodiamNavbar = (isLoggedIn) => {
 
   return (
     <nav className="navbar navbar-expand-md anodiam-navbar">
@@ -14,13 +14,18 @@ const AnodiamNavbar = () => {
         <i className="fas fa-bars text-white"></i>
       </button>
       <div className="collapse navbar-collapse links" id="navbarSupportedContent">
-        <ul className="navbar-nav">
-          <li ><NavLink className="anodiam-nav-link" to="/" exact>Login</NavLink></li>
-          <li ><NavLink className="anodiam-nav-link" to="/register" exact>Register</NavLink></li>
-          <li ><NavLink className="anodiam-nav-link" to="/home" exact>Home</NavLink></li>
-          <li ><NavLink className="anodiam-nav-link" to="/error" exact>Error</NavLink></li>
-          <li ><NavLink className="anodiam-nav-link" to="/undefined" exact>Redirect</NavLink></li>
-        </ul>
+        {
+          isLoggedIn ?
+            <ul className="navbar-nav">
+              <li ><NavLink className="anodiam-nav-link" to="/" exact>Login</NavLink></li>
+              <li ><NavLink className="anodiam-nav-link" to="/register" exact>Register</NavLink></li>
+            </ul> :
+            <ul className="navbar-nav">
+              <li ><NavLink className="anodiam-nav-link" to="/home" exact>Home</NavLink></li>
+              <li ><NavLink className="anodiam-nav-link" to="/error" exact>Error</NavLink></li>
+              <li ><NavLink className="anodiam-nav-link" to="/undefined" exact>Redirect</NavLink></li>
+            </ul>
+        }
       </div>
     </nav>
   )
