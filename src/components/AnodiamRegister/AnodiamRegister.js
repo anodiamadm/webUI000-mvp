@@ -34,7 +34,6 @@ const AnodiamRegister = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsPending(true);
     setErrorShortUsername(null);
     setErrorWeekPassword(null)
     setErrorConfPassword(null);
@@ -55,6 +54,7 @@ const AnodiamRegister = () => {
     if(errFlag === false)
     {
       const requestData = {username, email, password }
+      setIsPending(true);
       fetch(url, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
@@ -65,16 +65,17 @@ const AnodiamRegister = () => {
         }
         return res.json();
       }).then(data => {
+        setIsPending(false);
         setResponse(data);
       }).catch(err => {
         const networkErr = `Unacceptable network param! ${err.message}`;
         setResponse({code:406, message:networkErr});
       }).finally(() => {
         setIsPending(false);
+        history.push('/register');
       });
     }
-    history.push('/register');
-    errFlag = false;
+    setResponse({code:-1, message:"none"});
   };
 
   return (

@@ -7,8 +7,9 @@ const AnodiamLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isPending, setIsPending] = useState(false);
-  const [loginError, setLoginError] = useState(null);
+  const [error, setError] = useState(null);
   const history = useHistory();
+  const url = 'http://localhost:8445/login';
 
   const stopChange = (e) => {
     e.preventDefault();
@@ -25,22 +26,27 @@ const AnodiamLogin = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsPending(true);
-    setLoginError(null);
-    if(username==='anirban123' && password==='anirban@123') {
-      history.push('/home');
-    } else {
-      setLoginError('Wrong username or password');
-    }
-    setIsPending(false);
-    // const blog = { username, email, password };
-    // setIsPending(true);
-    // history.push('/');
-    // fetch('http://localhost:8000/users', {
-    //   method: 'POST',
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(blog)
-    // }).then(() => {
-    //   console.log('New User Created');
+    setError(null);
+    const loginInfo = { username, password }
+    fetch(url, {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(loginInfo)
+    }).then(res => {
+      console.log(res);
+      if(!res.ok) {
+        throw Error('Incorrect REST API end-point');
+      }
+      return res.json();
+    }).then(data => {
+      setIsPending(false);
+      setError(data);
+    }).catch(err => {
+      setError(err.message);
+    }).finally(() => {
+      setIsPending(false);
+      // history.push('/home');
+    });
   };
 
   return (
@@ -53,7 +59,7 @@ const AnodiamLogin = () => {
             <form className="anodiam-form" onSubmit={handleSubmit}>
               <div className="container anodiam-container">
 
-                { loginError && <div className="mandatory">{ loginError }</div> }
+                { error && <div className="mandatory">{ error }</div> }
 
                 <label>Username:</label>
                 <input

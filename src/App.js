@@ -5,8 +5,6 @@ import AnodiamHeader from './components/AnodiamHeader/AnodiamHeader';
 import AnodiamHome from './components/AnodiamHome/AnodiamHome';
 import AnodiamLogin from './components/AnodiamLogin/AnodiamLogin';
 import AnodiamRegister from './components/AnodiamRegister/AnodiamRegister';
-import CourseCreate from './components/CourseCreate/CourseCreate';
-import CourseDetails from './CourseDetails/CourseDetails';
 
 const App = () => {
   return (
