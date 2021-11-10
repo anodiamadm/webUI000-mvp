@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
-import { useState } from "react";
+import { useState } from 'react';
 import PasswordStrengthMeter from "./PasswordStrengthMeter/PasswordStrengthMeter";
 
 const AnodiamRegister = () => {
@@ -14,7 +14,6 @@ const AnodiamRegister = () => {
   const [errorWeekPassword, setErrorWeekPassword] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const [response, setResponse] = useState({code:-1, message:"none"});
-      
   const history = useHistory();
   let errFlag = false;
   const url = 'http://localhost:8444/api/public/student-signup';
@@ -55,24 +54,26 @@ const AnodiamRegister = () => {
     }
     if(errFlag === false)
     {
-      const studentToSave = {username, email, password }
+      const requestData = {username, email, password }
       fetch(url, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(studentToSave)
-      }).then((res) => {
-        if(!res.ok){
-          
+        body: JSON.stringify(requestData)
+      }).then(res => {
+        if(!res.ok) {
+          throw Error('Incorrect REST API end-point');
         }
         return res.json();
-      }).then((data) => {
+      }).then(data => {
         setResponse(data);
-      }).catch((error) => {
-        console.log(error.message, error.code);
+      }).catch(err => {
+        const networkErr = `Unacceptable network param! ${err.message}`;
+        setResponse({code:406, message:networkErr});
+      }).finally(() => {
+        setIsPending(false);
       });
     }
     history.push('/register');
-    setIsPending(false);
     errFlag = false;
   };
 
