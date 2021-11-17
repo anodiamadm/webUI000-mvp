@@ -38,42 +38,49 @@ const AnodiamRegister = () => {
     setErrorWeekPassword(null)
     setErrorConfPassword(null);
     if (username.length < 8) {
-      setErrorShortUsername('Must be more than 7 characters');
+      setErrorShortUsername('should be 8 or more characters long.');
       errFlag = true;
     }
     if (password!==confirmPassword) {
-      setErrorConfPassword('Does not match with password');
+      setErrorConfPassword('Does not match with password.');
       errFlag = true;
     }
     if (password.length<8 || password.length>20 || password.includes(username) || password.includes(email)
                             || !(/[a-z]/.test(password)) || !(/[A-Z]/.test(password))
                             || !(/[0-9]/.test(password)) || !(/[@#$%^&+=]/.test(password))) {
-      setErrorWeekPassword('Must be 8-20 characters long containing [a-z], [A-Z], [0-9], [@,#,$,%,^,&,+,=] but NOT your username or email');
+      setErrorWeekPassword('Must be 8-20 characters long containing [a-z], [A-Z], [0-9], [@,#,$,%,^,&,+,=] but NOT your username.');
       errFlag = true;
     }
     if(errFlag === false)
     {
       const requestData = {username, email, password }
       setIsPending(true);
+      const abortCont = new AbortController();
       fetch(url, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestData)
+        body: JSON.stringify(requestData),
+        signal: abortCont.signal
       }).then(res => {
         if(!res.ok) {
-          throw Error('Incorrect REST API end-point');
+          throw Error('Incorrect REST API end-point.');
         }
         return res.json();
       }).then(data => {
         setIsPending(false);
         setResponse(data);
       }).catch(err => {
-        const networkErr = `Unacceptable network param! ${err.message}`;
-        setResponse({code:406, message:networkErr});
+        if(err.name === 'AbortError') {
+          console.log('Fetch Aborted');
+        } else {
+          const networkErr = `Registration network issue! ${err.message}`;
+          setResponse({code:406, message:networkErr});
+        }
       }).finally(() => {
         setIsPending(false);
         history.push('/register');
       });
+      return () => abortCont.abort();
     }
     setResponse({code:-1, message:"none"});
   };
@@ -128,8 +135,9 @@ const AnodiamRegister = () => {
                 <input type="checkbox" onClick={toggleShowHidePassword} />
                 <span className="anodiam-form-checkmark"></span></label>
                                 
-                { !isPending && <button>Register New User</button> }
-                { isPending && <button disabled>Registering {username}...</button> }
+                { !isPending && <button className="btn btn-primary btn-block">Register New User</button> }
+                { isPending && <button disabled className="btn btn-primary btn-block btn-disabled">
+                  Registering {username}...</button> }
               </div>
             </form>
           </div>

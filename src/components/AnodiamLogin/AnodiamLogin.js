@@ -28,25 +28,33 @@ const AnodiamLogin = () => {
     setIsPending(true);
     setError(null);
     const loginInfo = { username, password }
+    const abortCont = new AbortController();
+    
     fetch(url, {
       method: 'POST',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(loginInfo)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(loginInfo),
+      signal: abortCont.signal
     }).then(res => {
-      console.log(res);
       if(!res.ok) {
-        throw Error('Incorrect REST API end-point');
+        throw Error('Unauthorized login attempt! Wrong username or password.');
       }
       return res.json();
     }).then(data => {
+      console.log('Header: ', data);
       setIsPending(false);
-      setError(data);
+      history.push('/home');
+      history.push('/');
     }).catch(err => {
-      setError(err.message);
+      if(err.name === 'AbortError') {
+        console.log('Fetch Aborted');
+      } else {
+        setError(err.message);
+      }
     }).finally(() => {
       setIsPending(false);
-      // history.push('/home');
     });
+    return () => abortCont.abort();
   };
 
   return (
@@ -79,8 +87,9 @@ const AnodiamLogin = () => {
                 <input type="checkbox" onClick={toggleShowHidePassword} />
                 <span className="anodiam-form-checkmark"></span></label>
               
-                { !isPending && <button>Login</button> }
-                { isPending && <button disabled>Logging in {username}...</button> }
+                { !isPending && <button className="btn btn-primary btn-block">Login</button> }
+                { isPending && <button disabled className="btn btn-primary btn-block btn-disabled">
+                  Logging in {username}...</button> }
               </div>
             </form>
           </div>
