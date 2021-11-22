@@ -26,7 +26,7 @@ const AnodiamNavbar = () => {
             </ul> :
             <ul className="navbar-nav">
               <li ><NavLink className="anodiam-nav-link" to="/buyCourses" exact>Buy Courses</NavLink></li>
-              <li ><NavLink className="anodiam-nav-link" to="/Profile" exact>My Profile</NavLink></li>
+              <li ><NavLink className="anodiam-nav-link" to="/profile" exact>My Profile</NavLink></li>
               <li ><NavLink className="anodiam-nav-link" to="/learning" exact>My Learning</NavLink></li>
               <li ><NavLink className="anodiam-nav-link" onClick={doLogout} to="/" exact>Logout</NavLink></li>
             </ul>
