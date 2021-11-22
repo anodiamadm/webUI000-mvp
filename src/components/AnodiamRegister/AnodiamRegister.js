@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useState } from 'react';
 import PasswordStrengthMeter from "./PasswordStrengthMeter/PasswordStrengthMeter";
+import { getUrl } from "../../utils/UrlUtils";
+import { stopChange } from "../../utils/StopCutCopyPaste";
 
 const AnodiamRegister = () => {
 
@@ -16,12 +18,8 @@ const AnodiamRegister = () => {
   const [response, setResponse] = useState({code:-1, message:"none"});
   const history = useHistory();
   let errFlag = false;
-  const url = 'http://localhost:8444/api/public/student-signup';
+  const url = getUrl('signupUrl');
 
-  const stopChange = (e) => {
-    e.preventDefault();
-  };
-  
   const toggleShowHidePassword = (e) => {
     if(document.getElementById("regoPassword").type==="password") {
       document.getElementById("regoPassword").type="text";
@@ -71,7 +69,7 @@ const AnodiamRegister = () => {
         setResponse(data);
       }).catch(err => {
         if(err.name === 'AbortError') {
-          console.log('Fetch Aborted');
+          return () => abortCont.abort();
         } else {
           const networkErr = `Registration network issue! ${err.message}`;
           setResponse({code:406, message:networkErr});
@@ -80,7 +78,6 @@ const AnodiamRegister = () => {
         setIsPending(false);
         history.push('/register');
       });
-      return () => abortCont.abort();
     }
     setResponse({code:-1, message:"none"});
   };

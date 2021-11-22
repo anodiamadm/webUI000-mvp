@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
+import React, { useContext } from 'react';
 import { useState } from "react/cjs/react.development";
+import { AuthContext } from "../../contexts/AuthContext";
+import { getUrl } from "../../utils/UrlUtils";
+import { stopChange } from "../../utils/StopCutCopyPaste";
 
 const AnodiamLogin = () => {
 
@@ -8,12 +12,10 @@ const AnodiamLogin = () => {
   const [password, setPassword] = useState('');
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
+  let errFlag = false;
   const history = useHistory();
-  const url = 'http://localhost:8445/login';
-
-  const stopChange = (e) => {
-    e.preventDefault();
-  };
+  const url = getUrl('loginUrl');
+  const { login } = useContext(AuthContext);
 
   const toggleShowHidePassword = (e) => {
     if(document.getElementById("password").type==="password") {
@@ -40,21 +42,24 @@ const AnodiamLogin = () => {
         throw Error('Unauthorized login attempt! Wrong username or password.');
       }
       return res.json();
-    }).then(data => {
-      console.log('Header: ', data);
+    }).then(jwt => {
+      login(jwt);
       setIsPending(false);
-      history.push('/home');
-      history.push('/');
     }).catch(err => {
       if(err.name === 'AbortError') {
-        console.log('Fetch Aborted');
+        return () => abortCont.abort();
       } else {
         setError(err.message);
+        errFlag=true;
       }
     }).finally(() => {
       setIsPending(false);
+      if(errFlag===false) {
+        history.push('/buyCourses');
+      } else {
+        history.push('/');
+      }
     });
-    return () => abortCont.abort();
   };
 
   return (
