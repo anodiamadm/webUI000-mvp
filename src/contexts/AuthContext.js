@@ -11,7 +11,7 @@ const AuthContextProvider = (props) => {
   }
   const login=(jwt, userId)=>{
     setAuth(jwt);
-    setUserId('');
+    setUserId(userId);
   }
   return (
     <AuthContext.Provider value={{userId, auth, login, logout}}>
