@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { AuthContext } from "../../contexts/AuthContext";
 import { useHistory } from "react-router";
+import PageHeading from '../GenericComponents/PageHeading';
 
 const MyLearning = () => {
   const { auth } = useContext(AuthContext);
@@ -11,14 +12,11 @@ const MyLearning = () => {
   return (
     <div className="anodiam-container">
       <div className="anodiam-body-panel">
-        <div className="anodiam-body-panel-top">
-          <h2>My Learning</h2>
-        </div>
+        <PageHeading heading='My Learning' />
         <div className="anodiam-body-panel-mid">
-          Use JWT Token to get the userId.
-          <p>Use the userId to get level, board and language information</p>
+          <h2>Functionality for later sprints</h2>
+          <p>Use userId to get level, board and language information from profile.</p>
           <p>Show a paginated list of My Purchased courses...</p>
-          <p>Bearer&nbsp;{auth}</p>
         </div>
       </div>
     </div>

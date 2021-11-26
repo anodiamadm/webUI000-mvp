@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
-import Anodiam404 from './components/Anodiam404/Anodiam404';
+import Anodiam404 from './components/GenericComponents/Anodiam404/Anodiam404';
 import AnodiamBuyCourses from './components/AnodiamBuyCourses/AnodiamBuyCourses';
-import AnodiamFooter from './components/AnodiamFooter/AnodiamFooter';
+import AnodiamFooter from './components/GenericComponents/AnodiamFooter/AnodiamFooter';
 import AnodiamHeader from './components/AnodiamHeader/AnodiamHeader';
 import AnodiamLogin from './components/AnodiamLogin/AnodiamLogin';
 import AnodiamRegister from './components/AnodiamRegister/AnodiamRegister';

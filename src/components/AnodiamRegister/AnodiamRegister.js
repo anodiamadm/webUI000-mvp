@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useState } from 'react';
 import PasswordStrengthMeter from "./PasswordStrengthMeter/PasswordStrengthMeter";
 import { getUrl } from "../../utils/UrlUtils";
 import { stopChange } from "../../utils/StopCutCopyPaste";
+import AskForLogin from "../GenericComponents/AskForLogin";
+import PageHeading from "../GenericComponents/PageHeading";
 
 const AnodiamRegister = () => {
 
@@ -85,9 +86,7 @@ const AnodiamRegister = () => {
   return (
     <div className="anodiam-container">
         <div className="anodiam-body-panel">
-          <div className="anodiam-body-panel-top">
-            <h2>Registration</h2>
-          </div>
+          <PageHeading heading='Register' />
           <div className="anodiam-body-panel-mid">
             <form className="anodiam-form" onSubmit={handleSubmit}>
               <div className="container anodiam-container">
@@ -138,9 +137,7 @@ const AnodiamRegister = () => {
               </div>
             </form>
           </div>
-          <div className="anodiam-body-panel-bottom">
-            <h6>Already registered?<Link to="/">Login here</Link></h6>
-          </div>
+          <AskForLogin />
       </div>
     </div>
   );

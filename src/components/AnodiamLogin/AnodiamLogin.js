@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import React, { useContext } from 'react';
 import { useState } from "react/cjs/react.development";
 import { AuthContext } from "../../contexts/AuthContext";
 import { getUrl } from "../../utils/UrlUtils";
 import { stopChange } from "../../utils/StopCutCopyPaste";
+import AskForRegister from "../GenericComponents/AskForRegister";
+import PageHeading from "../GenericComponents/PageHeading";
 
 const AnodiamLogin = () => {
 
@@ -38,24 +39,29 @@ const AnodiamLogin = () => {
       body: JSON.stringify(loginInfo),
       signal: abortCont.signal
     }).then(res => {
+      // console.log('res: ', res);
       if(!res.ok) {
         throw Error('Unauthorized login attempt! Wrong username or password.');
       }
       return res.json();
-    }).then(({Bearer, userId}) => {
-      login({Bearer, userId});
+    }).then(auth => {
+      // console.log('Auth: ', auth);
+      login(auth);
       setIsPending(false);
     }).catch(err => {
       if(err.name === 'AbortError') {
         return () => abortCont.abort();
       } else {
+        // console.log('err: ', err);
         setError(err.message);
         errFlag=true;
       }
     }).finally(() => {
       setIsPending(false);
       if(errFlag===false) {
-        history.push('/buyCourses');
+//      This needs to be BUY Courses going forward
+        history.push('/profile');
+        // history.push('/buyCourses');
       } else {
         history.push('/');
       }
@@ -65,9 +71,7 @@ const AnodiamLogin = () => {
   return (
     <div className="anodiam-container">
         <div className="anodiam-body-panel">
-          <div className="anodiam-body-panel-top">
-            <h2>Login</h2>
-          </div>
+          <PageHeading heading='Login' />
           <div className="anodiam-body-panel-mid">
             <form className="anodiam-form" onSubmit={handleSubmit}>
               <div className="container anodiam-container">
@@ -98,9 +102,7 @@ const AnodiamLogin = () => {
               </div>
             </form>
           </div>
-          <div className="anodiam-body-panel-bottom">
-            <h6>Not yet registered?<Link to="/register">Register here</Link></h6>
-          </div>
+          <AskForRegister/>
       </div>
     </div>
   );

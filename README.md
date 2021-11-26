@@ -6,11 +6,19 @@ In the .env file set HTTPS=true and follow OS specific instructions at https://g
 
 ### `npm install react-router-dom@5`
 
-Installs react-router-dom package version 5. Check in package.json file for the row stating: react-router-dom": "^5.3.0"
+Installs react-router-dom package version 5. Check in package.json file for the row stating: "react-router-dom": "^5.3.0"
 
 ### `npm install bootstrap`
 
-Installs bootstrap package. Check in package.json file for the row stating: bootstrap": "^5.1.3"
+Installs bootstrap package. Check in package.json file for the row stating: "bootstrap": "^5.1.3"
+
+### `npm install react-phone-number-input --save`
+
+Installs react-phone-number-input package. Check in package.json file for the row: "react-phone-number-input": "^3.1.41"
+
+### `npm install react-places-autocomplete`
+
+Installs react-places-autocomplete. Check in package.json file for the row: "react-places-autocomplete": "^7.3.0"
 
 # Getting Started with Create React App
 
