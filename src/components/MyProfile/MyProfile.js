@@ -5,6 +5,8 @@ import { stopChange } from "../../utils/StopCutCopyPaste";
 import PageHeading from '../GenericComponents/PageHeading';
 import IsdPhoneNumber from '../InputFields/IsdPhoneNumber/IsdPhoneNumber';
 import PostalAddress from '../InputFields/PostalAddress/PostalAddress';
+import AnodiamDorpdown from '../InputFields/AnodiamDropdown';
+import { getUrl } from '../../utils/UrlUtils';
 
 const MyProfile = () => {
   const { auth } = useContext(AuthContext);
@@ -18,6 +20,7 @@ const MyProfile = () => {
   const [guardiansEmail, setGuardiansEmail] = useState('');
   const [guardiansPhoneNumber, setGuardiansPhoneNumber] = useState('');
   const [board, setBoard] = useState('');
+  const boardListUrl = getUrl('boardListUrl')
   const [level, setLevel] = useState('');
   const [address, setAddress] = useState('');
   const [coordinates, setCoordinates] = useState({
@@ -56,12 +59,8 @@ const MyProfile = () => {
                 <IsdPhoneNumber phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} />
                 
                 <label>Board:</label>
-                <select className="form-control" value={board}
-                onChange={(e) => setBoard(e.target.value)} >
-                  <option value="ICSE">ICSE</option>
-                  <option value="CBSE">CBSE</option>
-                  <option value="other">Other</option>
-                </select>
+                <AnodiamDorpdown item={board} setItem={setBoard} listUrl={boardListUrl} setError={setError}/>
+                <p>Board set to: {board}</p>
 
                 <label>Class:</label>
                 <select className="form-control" value={level}

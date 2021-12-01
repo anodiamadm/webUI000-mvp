@@ -39,29 +39,26 @@ const AnodiamLogin = () => {
       body: JSON.stringify(loginInfo),
       signal: abortCont.signal
     }).then(res => {
-      // console.log('res: ', res);
       if(!res.ok) {
         throw Error('Unauthorized login attempt! Wrong username or password.');
       }
       return res.json();
     }).then(returnedAuth => {
-      // console.log('Auth: ', auth);
       login(returnedAuth.Bearer);
       setIsPending(false);
     }).catch(err => {
       if(err.name === 'AbortError') {
         return () => abortCont.abort();
       } else {
-        // console.log('err: ', err);
         setError(err.message);
         errFlag=true;
       }
     }).finally(() => {
       setIsPending(false);
       if(errFlag===false) {
-//      This needs to be BUY Courses going forward
+        //  This needs to be BUY Courses going forward
         history.push('/profile');
-        // history.push('/buyCourses');
+        //  history.push('/buyCourses');
       } else {
         history.push('/');
       }
