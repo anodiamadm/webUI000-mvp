@@ -44,9 +44,9 @@ const AnodiamLogin = () => {
         throw Error('Unauthorized login attempt! Wrong username or password.');
       }
       return res.json();
-    }).then(auth => {
+    }).then(returnedAuth => {
       // console.log('Auth: ', auth);
-      login(auth);
+      login(returnedAuth.Bearer);
       setIsPending(false);
     }).catch(err => {
       if(err.name === 'AbortError') {

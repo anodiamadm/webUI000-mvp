@@ -9,13 +9,13 @@ const MyLearning = () => {
   if(auth===null) {
     history.push('/');
   }
+  
   return (
     <div className="anodiam-container">
       <div className="anodiam-body-panel">
         <PageHeading heading='My Learning' />
         <div className="anodiam-body-panel-mid">
           <h2>Functionality for later sprints</h2>
-          <p>Use userId to get level, board and language information from profile.</p>
           <p>Show a paginated list of My Purchased courses...</p>
         </div>
       </div>

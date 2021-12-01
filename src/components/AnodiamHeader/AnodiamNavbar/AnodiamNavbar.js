@@ -5,7 +5,9 @@ import { AuthContext } from "../../../contexts/AuthContext";
 
 const AnodiamNavbar = () => {
   const { auth, logout } = useContext(AuthContext);
-  const doLogout = () => logout();
+  const doLogout = () => {
+    logout();
+  }
   return (
     <nav className="navbar navbar-expand-md anodiam-navbar">
       <NavLink to="#" exact>
@@ -19,7 +21,7 @@ const AnodiamNavbar = () => {
       </button>
       <div className="collapse navbar-collapse links" id="navbarSupportedContent">
         {
-          auth===null ?
+          (auth===null) ?
             <ul className="navbar-nav">
               <li ><NavLink className="anodiam-nav-link" to="/" exact>Login</NavLink></li>
               <li ><NavLink className="anodiam-nav-link" to="/register" exact>Register</NavLink></li>

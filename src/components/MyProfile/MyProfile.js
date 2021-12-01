@@ -24,11 +24,6 @@ const MyProfile = () => {
     lat: null,
     lng: null
   });
-  // const [country, setCountry] = useState('');
-  // const [state, setState] = useState('');
-  // const [town, setTown] = useState('');
-  // const [suburb, setSuburb] = useState('');
-  // const [zip, setZip] = useState('');
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
   
@@ -56,7 +51,7 @@ const MyProfile = () => {
                 <input type="text" value={fullName} 
                   onChange={(e) => setFullName(e.target.value)} className="form-control" 
                   onCut={stopChange} onCopy={stopChange} onPaste={stopChange} />
-                
+
                 <label>Mobile Number:</label>
                 <IsdPhoneNumber phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} />
                 
@@ -80,7 +75,7 @@ const MyProfile = () => {
                 
                 <label>Address:</label>
                 <PostalAddress address={address} setAddress={setAddress} className="form-control" 
-                  onError={handlePlacessError} clearItemsOnError={true}
+                  onError={handlePlacessError} clearItemsOnError={true} coordinates={coordinates}
                   setCoordinates={setCoordinates} />
                 
                 <label>Guardian's Name:</label>
@@ -101,12 +96,6 @@ const MyProfile = () => {
                   Updating Profile: {fullName}...</button> }
               </div>
             </form>
-          <p>Phone # {phoneNumber}</p>
-          <p>Address: {address}</p>
-          <p>Lat Long: {coordinates.lat}, {coordinates.lng} Use to validate non null lat lng for valid address</p>
-          <p>Guardian's Phone # {guardiansPhoneNumber}</p>
-          <p>Use JWT Token to get the Profile Info</p>
-          <p>Perform CRUD on the Profile info</p>
         </div>
       </div>
     </div>
