@@ -1,11 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from "../../contexts/AuthContext";
 import { useHistory } from "react-router";
 import { stopChange } from "../../utils/StopCutCopyPaste";
 import PageHeading from '../GenericComponents/PageHeading';
 import IsdPhoneNumber from '../InputFields/IsdPhoneNumber/IsdPhoneNumber';
 import PostalAddress from '../InputFields/PostalAddress/PostalAddress';
-import AnodiamDorpdown from '../InputFields/AnodiamDropdown';
+import BoardDropdown from '../InputFields/AnodiamDropdowns/BoardDropdown';
+import LevelDropdown from '../InputFields/AnodiamDropdowns/LevelDropdown';
 import { getUrl } from '../../utils/UrlUtils';
 
 const MyProfile = () => {
@@ -14,19 +15,18 @@ const MyProfile = () => {
   if(auth===null) {
     history.push('/');
   }
+  const getProfileUrl = getUrl('getProfileUrl');
+  const [profile, setProfile] = useState(null);
   const [fullName, setFullName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [guardiansName, setGuardiansName] = useState('');
   const [guardiansEmail, setGuardiansEmail] = useState('');
   const [guardiansPhoneNumber, setGuardiansPhoneNumber] = useState('');
-  const [board, setBoard] = useState('');
-  const boardListUrl = getUrl('boardListUrl')
-  const [level, setLevel] = useState('');
+  const [boardId, setBoardId] = useState('');
+  const [levelId, setLevelId] = useState('');
   const [address, setAddress] = useState('');
-  const [coordinates, setCoordinates] = useState({
-    lat: null,
-    lng: null
-  });
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
   
@@ -39,6 +39,31 @@ const MyProfile = () => {
   const handlePlacessError = () => {
     setError("Invalid Address");
   }
+
+  useEffect(() => {
+    fetch(getProfileUrl, {
+      headers: { 'Authorization': "Bearer " + auth }
+    }).then(res => {
+      if(!res.ok) {
+        throw Error('Error in fetching from ' + getProfileUrl);
+      }
+      return res.json();
+    }).then(returnedProfile => {
+      setProfile(returnedProfile);
+      setFullName(returnedProfile.fullName);
+      setPhoneNumber(returnedProfile.phoneNumber);
+      setGuardiansName(returnedProfile.guardiansName);
+      setGuardiansEmail(returnedProfile.guardiansEmail);
+      setGuardiansPhoneNumber(returnedProfile.guardiansPhoneNumber);
+      setBoardId(returnedProfile.board.boardId);
+      setLevelId(returnedProfile.level.levelId);
+      setAddress(returnedProfile.address);
+      setLatitude(returnedProfile.latitude);
+      setLongitude(returnedProfile.longitude);
+    }).catch(err => {
+      setError(err.message);
+    });
+  }, [auth, getProfileUrl])
 
   return (
     <div className="anodiam-container">
@@ -57,26 +82,18 @@ const MyProfile = () => {
 
                 <label>Mobile Number:</label>
                 <IsdPhoneNumber phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} />
-                
+
                 <label>Board:</label>
-                <AnodiamDorpdown item={board} setItem={setBoard} listUrl={boardListUrl} setError={setError}/>
-                <p>Board set to: {board}</p>
+                <BoardDropdown boardId={boardId} setBoardId={setBoardId} setError={setError}/>
 
                 <label>Class:</label>
-                <select className="form-control" value={level}
-                onChange={(e) => setLevel(e.target.value)} >
-                  <option value="9">IX</option>
-                  <option value="10">X</option>
-                  <option value="11">XI</option>
-                  <option value="12">XII</option>
-                  <option value="other">Other</option>
-                </select>
+                <LevelDropdown levelId={levelId} setLevelId={setLevelId} setError={setError}/>
                 
                 <label>Address:</label>
-                <PostalAddress address={address} setAddress={setAddress} className="form-control" 
+                {/* <PostalAddress address={address} setAddress={setAddress} className="form-control" 
                   onError={handlePlacessError} clearItemsOnError={true} coordinates={coordinates}
                   setCoordinates={setCoordinates} />
-                
+                 */}
                 <label>Guardian's Name:</label>
                 <input type="text" value={guardiansName} 
                   onChange={(e) => setGuardiansName(e.target.value)} className="form-control" 
@@ -92,7 +109,18 @@ const MyProfile = () => {
                 
                 { !isPending && <button className="btn btn-primary btn-block">Update Profile</button> }
                 { isPending && <button disabled className="btn btn-primary btn-block btn-disabled">
-                  Updating Profile: {fullName}...</button> }
+                  Updating Profile: {profile.fullName}...</button> }
+
+                <p>fullName: {fullName}</p>
+                <p>phoneNumber: {phoneNumber}</p>
+                <p>guardiansName: {guardiansName}</p>
+                <p>guardiansEmail: {guardiansEmail}</p>
+                <p>guardiansPhoneNumber: {guardiansPhoneNumber}</p>
+                <p>boardId: {boardId}</p>
+                <p>levelId: {levelId}</p>
+                <p>address: {address}</p>
+                <p>coordinates.Lat: {latitude}</p>
+                <p>coordinates.Lng: {longitude}</p>
               </div>
             </form>
         </div>
