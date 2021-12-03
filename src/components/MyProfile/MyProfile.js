@@ -16,7 +16,11 @@ const MyProfile = () => {
     history.push('/');
   }
   const getProfileUrl = getUrl('getProfileUrl');
-  const [profile, setProfile] = useState(null);
+  const profileCreateUrl = getUrl('profileCreateUrl');
+  const profileUpdateUrl = getUrl('profileUpdateUrl');
+  const [profile, setProfile] = useState('');
+  const [profileToSave, setProfileToSave] = useState('');
+  const [studentProfileId, setStudentProfileId] = useState('')
   const [fullName, setFullName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [guardiansName, setGuardiansName] = useState('');
@@ -32,8 +36,42 @@ const MyProfile = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
+    let profileSaveUrl = '';
+    const abortCont = new AbortController();
+    
     setIsPending(true);
     setError(null);
+    if(profile==='') {
+      profileSaveUrl = profileCreateUrl;
+    } else {
+      profileSaveUrl = profileUpdateUrl;
+    }
+    setProfileToSave({
+      "studentProfileId": {studentProfileId},
+      "fullName": {fullName},
+      "phoneNumber": {phoneNumber},
+      "address": {address},
+      "latitude": {latitude},
+      "longitude": {longitude},
+      "guardiansName": {guardiansName},
+      "guardiansEmail": {guardiansEmail},
+      "guardiansPhoneNumber": {guardiansPhoneNumber},
+      "board": { "boardId": {boardId} },
+      "level": { "levelId": {levelId} },
+      "suburb": null,
+      "user": { "userId": 25 },
+      "language": { "language_id": 1 }
+    });
+
+    console.log('profileToSave: ', profileToSave.boardId);
+    fetch(profileSaveUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json',
+                 'Authorization': "Bearer " + auth },
+      body: JSON.stringify(profileToSave),
+      signal: abortCont.signal
+    })
+    setIsPending(false);
   }
 
   const handlePlacessError = () => {
@@ -49,17 +87,22 @@ const MyProfile = () => {
       }
       return res.json();
     }).then(returnedProfile => {
-      setProfile(returnedProfile);
-      setFullName(returnedProfile.fullName);
-      setPhoneNumber(returnedProfile.phoneNumber);
-      setGuardiansName(returnedProfile.guardiansName);
-      setGuardiansEmail(returnedProfile.guardiansEmail);
-      setGuardiansPhoneNumber(returnedProfile.guardiansPhoneNumber);
-      setBoardId(returnedProfile.board.boardId);
-      setLevelId(returnedProfile.level.levelId);
-      setAddress(returnedProfile.address);
-      setLatitude(returnedProfile.latitude);
-      setLongitude(returnedProfile.longitude);
+      if(returnedProfile!==null) {
+        setProfile(returnedProfile);
+        setStudentProfileId(returnedProfile.studentProfileId);
+        setFullName(returnedProfile.fullName);
+        setPhoneNumber(returnedProfile.phoneNumber);
+        setGuardiansName(returnedProfile.guardiansName);
+        setGuardiansEmail(returnedProfile.guardiansEmail);
+        setGuardiansPhoneNumber(returnedProfile.guardiansPhoneNumber);
+        setBoardId(returnedProfile.board.boardId);
+        setLevelId(returnedProfile.level.levelId);
+        setAddress(returnedProfile.address);
+        setLatitude(returnedProfile.latitude);
+        setLongitude(returnedProfile.longitude);
+      } else {
+        setProfile('')
+      }
     }).catch(err => {
       setError(err.message);
     });
@@ -76,7 +119,7 @@ const MyProfile = () => {
                 { error && <div className="mandatory">{ error }</div> }
 
                 <label>Name:</label>
-                <input type="text" value={fullName} 
+                <input type="text" value={fullName===null ? '' : fullName}
                   onChange={(e) => setFullName(e.target.value)} className="form-control" 
                   onCut={stopChange} onCopy={stopChange} onPaste={stopChange} />
 
@@ -90,12 +133,12 @@ const MyProfile = () => {
                 <LevelDropdown levelId={levelId} setLevelId={setLevelId} setError={setError}/>
                 
                 <label>Address:</label>
-                {/* <PostalAddress address={address} setAddress={setAddress} className="form-control" 
-                  onError={handlePlacessError} clearItemsOnError={true} coordinates={coordinates}
-                  setCoordinates={setCoordinates} />
-                 */}
+                <PostalAddress address={address} setAddress={setAddress} className="form-control" 
+                  onError={handlePlacessError} clearItemsOnError={true} latitude={latitude} setLatitude={setLatitude}
+                  longitude={longitude} setLongitude={setLongitude} />
+
                 <label>Guardian's Name:</label>
-                <input type="text" value={guardiansName} 
+                <input type="text" value={guardiansName===null ? '' : guardiansName}
                   onChange={(e) => setGuardiansName(e.target.value)} className="form-control" 
                   onCut={stopChange} onCopy={stopChange} onPaste={stopChange} />
                 
@@ -103,14 +146,20 @@ const MyProfile = () => {
                 <IsdPhoneNumber phoneNumber={guardiansPhoneNumber} setPhoneNumber={setGuardiansPhoneNumber} />
                 
                 <label>Guardian's Email:</label>
-                <input type="email" value={guardiansEmail}
+                <input type="email" value={guardiansEmail===null ? '' : guardiansEmail}
                   onChange={(e) => setGuardiansEmail(e.target.value)} className="form-control" 
                   onCut={stopChange} onCopy={stopChange} onPaste={stopChange} />
                 
-                { !isPending && <button className="btn btn-primary btn-block">Update Profile</button> }
-                { isPending && <button disabled className="btn btn-primary btn-block btn-disabled">
-                  Updating Profile: {profile.fullName}...</button> }
+                { !isPending && (profile!=='') && <button className="btn btn-primary btn-block">
+                  Update Profile</button> }
+                { !isPending && (profile==='') && <button className="btn btn-primary btn-block">
+                  Save Profile</button> }
+                { isPending && (profile!=='') && <button disabled className="btn btn-primary btn-block btn-disabled">
+                  Updating Profile: {fullName}...</button> }
+                { isPending && (profile==='') && <button disabled className="btn btn-primary btn-block btn-disabled">
+                  Saving Profile: {fullName}...</button> }
 
+                <p>studentProfileId: {studentProfileId}</p>
                 <p>fullName: {fullName}</p>
                 <p>phoneNumber: {phoneNumber}</p>
                 <p>guardiansName: {guardiansName}</p>
@@ -119,8 +168,8 @@ const MyProfile = () => {
                 <p>boardId: {boardId}</p>
                 <p>levelId: {levelId}</p>
                 <p>address: {address}</p>
-                <p>coordinates.Lat: {latitude}</p>
-                <p>coordinates.Lng: {longitude}</p>
+                <p>latitude: {latitude}</p>
+                <p>latitude: {longitude}</p>
               </div>
             </form>
         </div>

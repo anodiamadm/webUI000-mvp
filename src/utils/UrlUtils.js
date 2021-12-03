@@ -6,6 +6,8 @@ const loginUrl = 'http://localhost:8445/login';
 const boardListUrl = 'http://localhost:8446/api/master-data/boards';
 const levelListUrl = 'http://localhost:8446/api/master-data/levels';
 const getProfileUrl = 'http://localhost:8446/api/user/profile';
+const profileCreateUrl = 'http://localhost:8446/api/user/save-profile';
+const profileUpdateUrl = 'http://localhost:8446/api/user/modify-profile';
 // ******************************************************
 
 export function getUrl (targetFunction) {
@@ -25,6 +27,12 @@ export function getUrl (targetFunction) {
       break;
     case 'getProfileUrl':
       url = getProfileUrl;
+      break;
+    case 'profileCreateUrl':
+      url = profileCreateUrl;
+      break;
+    case 'profileUpdateUrl':
+      url = profileUpdateUrl;
       break;
     default:
       url = loginUrl;

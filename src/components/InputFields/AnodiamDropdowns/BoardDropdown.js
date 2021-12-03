@@ -23,8 +23,9 @@ const BoardDropdown = ({boardId, setBoardId, setError}) => {
   return (
     <div>
       { boards!==null ?
-        <select className="form-control" value={boardId}
+        <select className="form-control" value={boardId==='' ? '-100' : boardId}
           onChange={(e) => setBoardId(e.target.value)} >
+          <option disabled="disabled" value='-100'>-- Select Board --</option>
           {boards.map(board=>(
             <option value = {board.boardId} key = {board.boardId}>{board.boardShortName}</option>
           ))} 

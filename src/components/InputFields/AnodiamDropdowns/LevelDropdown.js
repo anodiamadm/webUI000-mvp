@@ -23,8 +23,9 @@ const LevelDropdown = ({levelId, setLevelId, setError}) => {
   return (
     <div>
       { levels!==null ?
-        <select className="form-control" value={levelId}
+        <select className="form-control" value={levelId==='' ? '-100' : levelId}
           onChange={(e) => setLevelId(e.target.value)} >
+          <option disabled="disabled" value='-100'>-- Select Level --</option>
           {levels.map(level=>(
             <option value = {level.levelId} key = {level.levelId}>{level.levelName}</option>
           ))} 

@@ -1,12 +1,13 @@
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { stopChange } from '../../../utils/StopCutCopyPaste';
 
-const PostalAddress = ({address, setAddress, coordinates, setCoordinates}) => {
+const PostalAddress = ({address, setAddress, setLatitude, setLongitude}) => {
   const handleSelect = async value => {
     const results = await geocodeByAddress(value);
     const ll = await getLatLng(results[0]);
     setAddress(value);
-    setCoordinates(ll);
+    setLatitude(ll.lat);
+    setLongitude(ll.lng);
   }
 
   return (
