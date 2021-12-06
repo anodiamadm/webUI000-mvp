@@ -1,41 +1,47 @@
 // ******************************************************
 // Service access URLs
 // ******************************************************
-const signupUrl = 'http://localhost:8444/api/public/student-signup'
-const loginUrl = 'http://localhost:8445/login';
-const boardListUrl = 'http://localhost:8446/api/master-data/boards';
-const levelListUrl = 'http://localhost:8446/api/master-data/levels';
-const getProfileUrl = 'http://localhost:8446/api/user/profile';
-const profileCreateUrl = 'http://localhost:8446/api/user/save-profile';
-const profileUpdateUrl = 'http://localhost:8446/api/user/modify-profile';
+
+const protocol = 'http';
+const server = 'localhost';
+const signupPort = '8444';
+const loginPort = '8445';
+const profilePort = '8446';
+const signupEndPoint = '/api/public/student-signup'
+const loginEndPoint = '/login';
+const boardListEndPoint = '/api/master-data/boards';
+const levelListEndPoint = '/api/master-data/levels';
+const getProfileEndPoint = '/api/user/profile';
+const profileCreateEndPoint = '/api/user/save-profile';
+const profileUpdateEndPoint = '/api/user/modify-profile';
 // ******************************************************
 
 export function getUrl (targetFunction) {
-  let url = loginUrl;
+  let url = '';
   switch (targetFunction) {
     case 'loginUrl':
-      url = loginUrl;
+      url = protocol + '://' + server + ':' + loginPort + loginEndPoint;
       break;
     case 'signupUrl':
-      url = signupUrl;
+      url = protocol + '://' + server + ':' + signupPort + signupEndPoint;
       break;
     case 'boardListUrl':
-      url = boardListUrl;
+      url = protocol + '://' + server + ':' + profilePort + boardListEndPoint;
       break;
     case 'levelListUrl':
-      url = levelListUrl;
+      url = protocol + '://' + server + ':' + profilePort + levelListEndPoint;
       break;
     case 'getProfileUrl':
-      url = getProfileUrl;
+      url = protocol + '://' + server + ':' + profilePort + getProfileEndPoint;
       break;
     case 'profileCreateUrl':
-      url = profileCreateUrl;
+      url = protocol + '://' + server + ':' + profilePort + profileCreateEndPoint;
       break;
     case 'profileUpdateUrl':
-      url = profileUpdateUrl;
+      url = protocol + '://' + server + ':' + profilePort + profileUpdateEndPoint;
       break;
     default:
-      url = loginUrl;
+      url = protocol + '://' + server + ':' + loginPort + loginEndPoint;
   }
   return (url);
 }

@@ -20,7 +20,8 @@ const MyProfile = () => {
   const profileUpdateUrl = getUrl('profileUpdateUrl');
   const [response, setResponse] = useState({code:-1, message:"none"});
   const [profile, setProfile] = useState('');
-  const [profileToSave, setProfileToSave] = useState('');
+  const [profileToCreate, setProfileToCreate] = useState('');
+  const [profileToUpdate, setProfileToUpdate] = useState('');
   const [studentProfileId, setStudentProfileId] = useState('')
   const [fullName, setFullName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -35,95 +36,36 @@ const MyProfile = () => {
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
   
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const abortCont = new AbortController();
-    
-    setIsPending(true);
-    setError(null);
-    if(profile==='') {
-      setProfileToSave({
-        "fullName": {fullName},
-        "phoneNumber": {phoneNumber},
-        "address": {address},
-        "latitude": {latitude},
-        "longitude": {longitude},
-        "guardiansName": {guardiansName},
-        "guardiansEmail": {guardiansEmail},
-        "guardiansPhoneNumber": {guardiansPhoneNumber},
-        "board": { "boardId": {boardId} },
-        "level": { "levelId": {levelId} },
-        "language": { "language_id": 1 }
-      });
-      console.log(profileToSave);
-      console.log(profileCreateUrl);
-      // fetch(profileCreateUrl, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json',
-      //             'Authorization': "Bearer " + auth },
-      //   body: JSON.stringify(profileToSave),
-      //   signal: abortCont.signal
-      // }).then(res => {
-      //   if(!res.ok) {
-      //     throw Error(`Error saving profile: ${profileToSave} to url: ${profileCreateUrl}`);
-      //   }
-      //   return res.json();
-      // }).then(data => {
-      //   setIsPending(false);
-      //   setResponse(data);
-      // }).catch(err => {
-      //   if(err.name === 'AbortError') {
-      //     return () => abortCont.abort();
-      //   } else {
-      //     const networkErr = `Registration network issue! ${err.message}`;
-      //     setResponse({code:406, message:networkErr});
-      //   }
-      // });
-    } else {
-      // setProfileToSave({
-      //   "student_profile_id": {studentProfileId},
-      //   "fullName": {fullName},
-      //   "phoneNumber": {phoneNumber},
-      //   "address": {address},
-      //   "latitude": {latitude},
-      //   "longitude": {longitude},
-      //   "guardiansName": {guardiansName},
-      //   "guardiansEmail": {guardiansEmail},
-      //   "guardiansPhoneNumber": {guardiansPhoneNumber},
-      //   "board": { "boardId": {boardId} },
-      //   "level": { "levelId": {levelId} },
-      //   "language": { "language_id": 1 }
-      // });
-      // fetch(profileUpdateUrl, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json',
-      //             'Authorization': "Bearer " + auth },
-      //   body: JSON.stringify(profileToSave),
-      //   signal: abortCont.signal
-      // }).then(res => {
-      //   if(!res.ok) {
-      //     throw Error(`Error saving profile: ${profileToSave} to url: ${profileUpdateUrl}`);
-      //   }
-      //   return res.json();
-      // }).then(data => {
-      //   setIsPending(false);
-      //   setResponse(data);
-      // }).catch(err => {
-      //   if(err.name === 'AbortError') {
-      //     return () => abortCont.abort();
-      //   } else {
-      //     const networkErr = `Registration network issue! ${err.message}`;
-      //     setResponse({code:406, message:networkErr});
-      //   }
-      // });
-      setIsPending(false);
-    }
-  }
-
-  const handlePlacessError = () => {
-    setError("Invalid Address");
-  }
-
+  useEffect(() => {
+    setProfileToCreate({
+      fullName,
+      phoneNumber,
+      address,
+      latitude,
+      longitude,
+      guardiansName,
+      guardiansEmail,
+      guardiansPhoneNumber,
+      "board": {boardId},
+      "level": {levelId},
+      "language": { "language_id": 1 }
+    });
+    setProfileToUpdate({
+      studentProfileId,
+      fullName,
+      phoneNumber,
+      address,
+      latitude,
+      longitude,
+      guardiansName,
+      guardiansEmail,
+      guardiansPhoneNumber,
+      "board": {boardId},
+      "level": {levelId},
+      "language": { "language_id": 1 }
+    });
+  }, [address, boardId, fullName, guardiansEmail, guardiansName, guardiansPhoneNumber, latitude, levelId, longitude, phoneNumber, studentProfileId])
+  
   useEffect(() => {
     fetch(getProfileUrl, {
       headers: { 'Authorization': "Bearer " + auth }
@@ -154,6 +96,66 @@ const MyProfile = () => {
     });
   }, [auth, getProfileUrl])
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const abortCont = new AbortController();
+    
+    setIsPending(true);
+    setError(null);
+    if(profile==='') {
+      fetch(profileCreateUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json',
+                  'Authorization': "Bearer " + auth },
+        body: JSON.stringify(profileToCreate),
+        signal: abortCont.signal
+      }).then(res => {
+        if(!res.ok) {
+          throw Error(`Error saving profile: ${JSON.stringify(profileToCreate)} to url: ${profileCreateUrl}`);
+        }
+        return res.json();
+      }).then(data => {
+        setIsPending(false);
+        setResponse(data);
+      }).catch(err => {
+        if(err.name === 'AbortError') {
+          return () => abortCont.abort();
+        } else {
+          const networkErr = `Registration network issue! ${err.message}`;
+          setResponse({code:406, message:networkErr});
+        }
+      });
+    } else {
+      fetch(profileUpdateUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json',
+                  'Authorization': "Bearer " + auth },
+        body: JSON.stringify(profileToUpdate),
+        signal: abortCont.signal
+      }).then(res => {
+        if(!res.ok) {
+          throw Error(`Error saving profile: ${JSON.stringify(profileToUpdate)} to url: ${profileUpdateUrl}`);
+        }
+        return res.json();
+      }).then(data => {
+        setIsPending(false);
+        setResponse(data);
+      }).catch(err => {
+        if(err.name === 'AbortError') {
+          return () => abortCont.abort();
+        } else {
+          const networkErr = `Registration network issue! ${err.message}`;
+          setResponse({code:406, message:networkErr});
+        }
+      });
+      setIsPending(false);
+    }
+  }
+
+  const handlePlacessError = () => {
+    setError("Invalid Address");
+  }
+  
   return (
     <div className="anodiam-container">
       <div className="anodiam-body-panel">

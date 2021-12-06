@@ -37,11 +37,12 @@ const PostalAddress = ({address, setAddress, setLatitude, setLongitude}) => {
                   ? { backgroundColor: '#aaddff', cursor: 'pointer' }
                   : { backgroundColor: '#ddeeff', cursor: 'pointer' };
                 return (
-                  <div
+                  <div 
                     {...getSuggestionItemProps(suggestion, {
                       className,
                       style,
                     })}
+                    key={suggestion.description}
                   >
                     <span>{suggestion.description}</span>
                   </div>
