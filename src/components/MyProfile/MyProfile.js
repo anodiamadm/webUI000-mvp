@@ -18,6 +18,7 @@ const MyProfile = () => {
   const getProfileUrl = getUrl('getProfileUrl');
   const profileCreateUrl = getUrl('profileCreateUrl');
   const profileUpdateUrl = getUrl('profileUpdateUrl');
+  const [response, setResponse] = useState({code:-1, message:"none"});
   const [profile, setProfile] = useState('');
   const [profileToSave, setProfileToSave] = useState('');
   const [studentProfileId, setStudentProfileId] = useState('')
@@ -36,42 +37,87 @@ const MyProfile = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    let profileSaveUrl = '';
     const abortCont = new AbortController();
     
     setIsPending(true);
     setError(null);
     if(profile==='') {
-      profileSaveUrl = profileCreateUrl;
+      setProfileToSave({
+        "fullName": {fullName},
+        "phoneNumber": {phoneNumber},
+        "address": {address},
+        "latitude": {latitude},
+        "longitude": {longitude},
+        "guardiansName": {guardiansName},
+        "guardiansEmail": {guardiansEmail},
+        "guardiansPhoneNumber": {guardiansPhoneNumber},
+        "board": { "boardId": {boardId} },
+        "level": { "levelId": {levelId} },
+        "language": { "language_id": 1 }
+      });
+      console.log(profileToSave);
+      console.log(profileCreateUrl);
+      // fetch(profileCreateUrl, {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json',
+      //             'Authorization': "Bearer " + auth },
+      //   body: JSON.stringify(profileToSave),
+      //   signal: abortCont.signal
+      // }).then(res => {
+      //   if(!res.ok) {
+      //     throw Error(`Error saving profile: ${profileToSave} to url: ${profileCreateUrl}`);
+      //   }
+      //   return res.json();
+      // }).then(data => {
+      //   setIsPending(false);
+      //   setResponse(data);
+      // }).catch(err => {
+      //   if(err.name === 'AbortError') {
+      //     return () => abortCont.abort();
+      //   } else {
+      //     const networkErr = `Registration network issue! ${err.message}`;
+      //     setResponse({code:406, message:networkErr});
+      //   }
+      // });
     } else {
-      profileSaveUrl = profileUpdateUrl;
+      // setProfileToSave({
+      //   "student_profile_id": {studentProfileId},
+      //   "fullName": {fullName},
+      //   "phoneNumber": {phoneNumber},
+      //   "address": {address},
+      //   "latitude": {latitude},
+      //   "longitude": {longitude},
+      //   "guardiansName": {guardiansName},
+      //   "guardiansEmail": {guardiansEmail},
+      //   "guardiansPhoneNumber": {guardiansPhoneNumber},
+      //   "board": { "boardId": {boardId} },
+      //   "level": { "levelId": {levelId} },
+      //   "language": { "language_id": 1 }
+      // });
+      // fetch(profileUpdateUrl, {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json',
+      //             'Authorization': "Bearer " + auth },
+      //   body: JSON.stringify(profileToSave),
+      //   signal: abortCont.signal
+      // }).then(res => {
+      //   if(!res.ok) {
+      //     throw Error(`Error saving profile: ${profileToSave} to url: ${profileUpdateUrl}`);
+      //   }
+      //   return res.json();
+      // }).then(data => {
+      //   setIsPending(false);
+      //   setResponse(data);
+      // }).catch(err => {
+      //   if(err.name === 'AbortError') {
+      //     return () => abortCont.abort();
+      //   } else {
+      //     const networkErr = `Registration network issue! ${err.message}`;
+      //     setResponse({code:406, message:networkErr});
+      //   }
+      // });
+      setIsPending(false);
     }
-    setProfileToSave({
-      "studentProfileId": {studentProfileId},
-      "fullName": {fullName},
-      "phoneNumber": {phoneNumber},
-      "address": {address},
-      "latitude": {latitude},
-      "longitude": {longitude},
-      "guardiansName": {guardiansName},
-      "guardiansEmail": {guardiansEmail},
-      "guardiansPhoneNumber": {guardiansPhoneNumber},
-      "board": { "boardId": {boardId} },
-      "level": { "levelId": {levelId} },
-      "suburb": null,
-      "user": { "userId": 25 },
-      "language": { "language_id": 1 }
-    });
-
-    console.log('profileToSave: ', profileToSave.boardId);
-    fetch(profileSaveUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json',
-                 'Authorization': "Bearer " + auth },
-      body: JSON.stringify(profileToSave),
-      signal: abortCont.signal
-    })
-    setIsPending(false);
   }
 
   const handlePlacessError = () => {
@@ -116,6 +162,8 @@ const MyProfile = () => {
           <form className="anodiam-form" onSubmit={handleSubmit}>
               <div className="container anodiam-container">
 
+                { (response.code===0) && <div className="success-message">{ response.message }</div> }
+                { (response.code>0) && <div className="mandatory">{ response.message }</div> }
                 { error && <div className="mandatory">{ error }</div> }
 
                 <label>Name:</label>
@@ -158,18 +206,6 @@ const MyProfile = () => {
                   Updating Profile: {fullName}...</button> }
                 { isPending && (profile==='') && <button disabled className="btn btn-primary btn-block btn-disabled">
                   Saving Profile: {fullName}...</button> }
-
-                <p>studentProfileId: {studentProfileId}</p>
-                <p>fullName: {fullName}</p>
-                <p>phoneNumber: {phoneNumber}</p>
-                <p>guardiansName: {guardiansName}</p>
-                <p>guardiansEmail: {guardiansEmail}</p>
-                <p>guardiansPhoneNumber: {guardiansPhoneNumber}</p>
-                <p>boardId: {boardId}</p>
-                <p>levelId: {levelId}</p>
-                <p>address: {address}</p>
-                <p>latitude: {latitude}</p>
-                <p>latitude: {longitude}</p>
               </div>
             </form>
         </div>
