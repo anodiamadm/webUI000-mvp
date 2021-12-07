@@ -12,8 +12,7 @@ const loginEndPoint = '/login';
 const boardListEndPoint = '/api/master-data/boards';
 const levelListEndPoint = '/api/master-data/levels';
 const getProfileEndPoint = '/api/user/profile';
-const profileCreateEndPoint = '/api/user/save-profile';
-const profileUpdateEndPoint = '/api/user/modify-profile';
+const profileSaveEndPoint = '/api/user/save-profile';
 // ******************************************************
 
 export function getUrl (targetFunction) {
@@ -34,11 +33,8 @@ export function getUrl (targetFunction) {
     case 'getProfileUrl':
       url = protocol + '://' + server + ':' + profilePort + getProfileEndPoint;
       break;
-    case 'profileCreateUrl':
-      url = protocol + '://' + server + ':' + profilePort + profileCreateEndPoint;
-      break;
-    case 'profileUpdateUrl':
-      url = protocol + '://' + server + ':' + profilePort + profileUpdateEndPoint;
+    case 'profileSaveUrl':
+      url = protocol + '://' + server + ':' + profilePort + profileSaveEndPoint;
       break;
     default:
       url = protocol + '://' + server + ':' + loginPort + loginEndPoint;

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from "../../contexts/AuthContext";
+import { PreferenceContext } from '../../contexts/PreferenceContext';
 import { useHistory } from "react-router";
 import { stopChange } from "../../utils/StopCutCopyPaste";
 import PageHeading from '../GenericComponents/PageHeading';
@@ -11,18 +12,16 @@ import { getUrl } from '../../utils/UrlUtils';
 
 const MyProfile = () => {
   const { auth } = useContext(AuthContext);
+  const { languageId } = useContext(PreferenceContext);
   const history = useHistory();
   if(auth===null) {
     history.push('/');
   }
   const getProfileUrl = getUrl('getProfileUrl');
-  const profileCreateUrl = getUrl('profileCreateUrl');
-  const profileUpdateUrl = getUrl('profileUpdateUrl');
+  const profileSaveUrl = getUrl('profileSaveUrl');
   const [response, setResponse] = useState({code:-1, message:"none"});
   const [profile, setProfile] = useState('');
-  const [profileToCreate, setProfileToCreate] = useState('');
-  const [profileToUpdate, setProfileToUpdate] = useState('');
-  const [studentProfileId, setStudentProfileId] = useState('')
+  const [profileToSave, setProfileToSave] = useState('');
   const [fullName, setFullName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [guardiansName, setGuardiansName] = useState('');
@@ -37,7 +36,7 @@ const MyProfile = () => {
   const [error, setError] = useState(null);
   
   useEffect(() => {
-    setProfileToCreate({
+    setProfileToSave({
       fullName,
       phoneNumber,
       address,
@@ -46,25 +45,12 @@ const MyProfile = () => {
       guardiansName,
       guardiansEmail,
       guardiansPhoneNumber,
-      "board": {boardId},
-      "level": {levelId},
-      "language": { "languageId": 1 }
+      boardId,
+      levelId,
+      languageId
     });
-    setProfileToUpdate({
-      studentProfileId,
-      fullName,
-      phoneNumber,
-      address,
-      latitude,
-      longitude,
-      guardiansName,
-      guardiansEmail,
-      guardiansPhoneNumber,
-      "board": {boardId},
-      "level": {levelId},
-      "language": { "languageId": 1 }
-    });
-  }, [address, boardId, fullName, guardiansEmail, guardiansName, guardiansPhoneNumber, latitude, levelId, longitude, phoneNumber, studentProfileId])
+    console.log('languageId: ', languageId);
+  }, [address, boardId, fullName, guardiansEmail, guardiansName, guardiansPhoneNumber, latitude, levelId, longitude, phoneNumber, languageId])
   
   useEffect(() => {
     fetch(getProfileUrl, {
@@ -77,7 +63,6 @@ const MyProfile = () => {
     }).then(returnedProfile => {
       if(returnedProfile!==null) {
         setProfile(returnedProfile);
-        setStudentProfileId(returnedProfile.studentProfileId);
         setFullName(returnedProfile.fullName);
         setPhoneNumber(returnedProfile.phoneNumber);
         setGuardiansName(returnedProfile.guardiansName);
@@ -102,54 +87,29 @@ const MyProfile = () => {
     
     setIsPending(true);
     setError(null);
-    if(profile==='') {
-      fetch(profileCreateUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json',
-                  'Authorization': "Bearer " + auth },
-        body: JSON.stringify(profileToCreate),
-        signal: abortCont.signal
-      }).then(res => {
-        if(!res.ok) {
-          throw Error(`Error saving profile: ${JSON.stringify(profileToCreate)} to url: ${profileCreateUrl}`);
-        }
-        return res.json();
-      }).then(data => {
-        setIsPending(false);
-        setResponse(data);
-      }).catch(err => {
-        if(err.name === 'AbortError') {
-          return () => abortCont.abort();
-        } else {
-          const networkErr = `Registration network issue! ${err.message}`;
-          setResponse({code:406, message:networkErr});
-        }
-      });
-    } else {
-      fetch(profileUpdateUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json',
-                  'Authorization': "Bearer " + auth },
-        body: JSON.stringify(profileToUpdate),
-        signal: abortCont.signal
-      }).then(res => {
-        if(!res.ok) {
-          throw Error(`Error saving profile: ${JSON.stringify(profileToUpdate)} to url: ${profileUpdateUrl}`);
-        }
-        return res.json();
-      }).then(data => {
-        setIsPending(false);
-        setResponse(data);
-      }).catch(err => {
-        if(err.name === 'AbortError') {
-          return () => abortCont.abort();
-        } else {
-          const networkErr = `Registration network issue! ${err.message}`;
-          setResponse({code:406, message:networkErr});
-        }
-      });
+    fetch(profileSaveUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json',
+                'Authorization': "Bearer " + auth },
+      body: JSON.stringify(profileToSave),
+      signal: abortCont.signal
+    }).then(res => {
+      if(!res.ok) {
+        throw Error(`Error saving profile: ${JSON.stringify(profileToSave)} to url: ${profileSaveUrl}`);
+      }
+      return res.json();
+    }).then(data => {
       setIsPending(false);
-    }
+      setResponse(data);
+    }).catch(err => {
+      if(err.name === 'AbortError') {
+        return () => abortCont.abort();
+      } else {
+        const networkErr = `Registration network issue! ${err.message}`;
+        setResponse({code:406, message:networkErr});
+      }
+    });
+    setIsPending(false);
   }
 
   const handlePlacessError = () => {
