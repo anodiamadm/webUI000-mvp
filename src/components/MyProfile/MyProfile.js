@@ -48,7 +48,7 @@ const MyProfile = () => {
       guardiansPhoneNumber,
       "board": {boardId},
       "level": {levelId},
-      "language": { "language_id": 1 }
+      "language": { "languageId": 1 }
     });
     setProfileToUpdate({
       studentProfileId,
@@ -62,7 +62,7 @@ const MyProfile = () => {
       guardiansPhoneNumber,
       "board": {boardId},
       "level": {levelId},
-      "language": { "language_id": 1 }
+      "language": { "languageId": 1 }
     });
   }, [address, boardId, fullName, guardiansEmail, guardiansName, guardiansPhoneNumber, latitude, levelId, longitude, phoneNumber, studentProfileId])
   
