@@ -49,7 +49,6 @@ const MyProfile = () => {
       levelId,
       languageId
     });
-    console.log('languageId: ', languageId);
   }, [address, boardId, fullName, guardiansEmail, guardiansName, guardiansPhoneNumber, latitude, levelId, longitude, phoneNumber, languageId])
   
   useEffect(() => {
