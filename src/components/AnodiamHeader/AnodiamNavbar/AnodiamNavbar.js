@@ -15,9 +15,9 @@ const AnodiamNavbar = () => {
       </NavLink>
 
       <button
-        className="navbar-toggler anodiam-burger" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle Navigation">
-        <i className="fas fa-bars text-white"></i>
+        <i className="fas fa-bars burger-icon"></i>
       </button>
       <div className="collapse navbar-collapse links" id="navbarSupportedContent">
         {

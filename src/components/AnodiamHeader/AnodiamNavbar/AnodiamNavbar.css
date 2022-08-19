@@ -1,17 +1,20 @@
 .anodiam-navbar {
   border-radius: 40px;
-  background: #3f9fff;
+  background: #e0f5ff;
   padding: 5px 30px 0px 10px;
   display: flex;
   align-items: center;
 }
 .anodiam-navbar img {
   width: 35px;
-  margin-top: -15px;
+  margin-top: -24px;
+  margin-right: 3px;
 }
 .anodiam-navbar h1 {
+  font-size: 36px;
+  font-weight: 900;
   display: inline;
-  color: #00ff5f;
+  color: #00b0f0;
 }
 .anodiam-navbar .links ul {
   margin-left: auto;
@@ -19,18 +22,19 @@
 .anodiam-navbar a {
   margin-left: 16px;
   text-decoration: none;
-  font-weight: 500;
-  color: #fff;
+  font-weight: 800;
+  color: #90979f;
   padding: 6px;
 }
 .anodiam-navbar a:hover {
-  color: #00ff5f;
-}
-.anodiam-burger {
-  color: #00ff5f;
+  color: #00bfff;
 }
 .anodiam-nav-link {
   display: block;
   margin: 0;
   padding: 0;
+}
+.burger-icon {
+  background: #e0f5ff;
+  color: #00b0f0;
 }

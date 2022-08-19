@@ -6,6 +6,8 @@ import { getUrl } from "../../utils/UrlUtils";
 import { stopChange } from "../../utils/StopCutCopyPaste";
 import AskForRegister from "../GenericComponents/AskForRegister";
 import PageHeading from "../GenericComponents/PageHeading";
+import '../../../node_modules/font-awesome/css/font-awesome.min.css';
+import AnodiamTooltipBody from "../GenericComponents/AnodiamTooltipBody";
 
 const AnodiamLogin = () => {
 
@@ -21,8 +23,16 @@ const AnodiamLogin = () => {
   const toggleShowHidePassword = (e) => {
     if(document.getElementById("password").type==="password") {
       document.getElementById("password").type="text";
+      document.getElementById("showPasswordIcon").hidden=true;
+      document.getElementById("hidePasswordIcon").hidden=false;
+      document.getElementById("showPasswordText").hidden=true;
+      document.getElementById("hidePasswordText").hidden=false;
     } else {
       document.getElementById("password").type="password";
+      document.getElementById("showPasswordIcon").hidden=false;
+      document.getElementById("hidePasswordIcon").hidden=true;
+      document.getElementById("showPasswordText").hidden=false;
+      document.getElementById("hidePasswordText").hidden=true;
     }
   };
 
@@ -68,16 +78,18 @@ const AnodiamLogin = () => {
   return (
     <div className="anodiam-container">
         <div className="anodiam-body-panel">
-          <PageHeading heading='Login' />
+          <PageHeading heading='Student Login' />
           <div className="anodiam-body-panel-mid">
             <form className="anodiam-form" onSubmit={handleSubmit}>
               <div className="container anodiam-container">
 
                 { error && <div className="mandatory">{ error }</div> }
 
-                <label>Username:</label>
+                <label>Email:&nbsp;&nbsp;
+                <AnodiamTooltipBody title="Your email address is used as your Anodiam username.">
+                <i className="fa fa-question-circle anodiam-help-button"></i></AnodiamTooltipBody></label>
                 <input
-                  type="text" required value={username} 
+                  type="email" required value={username} 
                   onChange={(e) => setUsername(e.target.value)} className="form-control" 
                   onCut={stopChange} onCopy={stopChange} onPaste={stopChange}
                 />
@@ -89,7 +101,10 @@ const AnodiamLogin = () => {
                   onCut={stopChange} onCopy={stopChange} onPaste={stopChange}
                 />
 
-                <label className="anodiam-form-container">Show Password
+                <label className="anodiam-form-container">
+                <i className="fa fa-eye password-eye" aria-hidden="true" id="showPasswordIcon"></i>
+                <i className="fa fa-eye-slash password-eye" aria-hidden="true" id="hidePasswordIcon" hidden={true}></i>
+                <span id="showPasswordText"> Show Password</span><span id="hidePasswordText" hidden={true}> Hide Password</span>
                 <input type="checkbox" onClick={toggleShowHidePassword} />
                 <span className="anodiam-form-checkmark"></span></label>
               

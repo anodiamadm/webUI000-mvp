@@ -6,10 +6,10 @@ const AnodiamHeader = () => {
     <div>
       <div className="App anodiam-gradiant-background">
         <div className="anodiam-container">
-          <div className="punch-line">Genuine Education</div>
+          <div className="punch-line">Foundation for Genuine Education</div>
           <AnodiamNavbar />
         </div>
-        </div>
+      </div>
     </div>
   );
 }

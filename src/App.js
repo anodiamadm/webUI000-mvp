@@ -8,37 +8,42 @@ import AnodiamRegister from './components/AnodiamRegister/AnodiamRegister';
 import MyLearning from './components/MyLearning/MyLearning';
 import MyProfile from './components/MyProfile/MyProfile';
 import AuthContextProvider from './contexts/AuthContext';
-import PreferenceContextProvider from './contexts/PreferenceContext';
+import AnodiamAbout from './components/GenericComponents/AnodiamFooter/AnodiamAbout';
+import AnodiamContact from './components/GenericComponents/AnodiamFooter/AnodiamContact';
 
 const App = () => {
   return (
     <Router>
       <AuthContextProvider>
-        <PreferenceContextProvider>
-          <AnodiamHeader />
-          <Switch>
-            <Route exact path="/">
-              <AnodiamLogin />
-            </Route>
-            <Route exact path="/register">
-              <AnodiamRegister />
-            </Route>
-            <Route exact path="/buyCourses">
-              <AnodiamBuyCourses />
-            </Route>
-            <Route exact path="/profile">
-              <MyProfile />
-            </Route>
-            <Route exact path="/learning">
-              <MyLearning />
-            </Route>
-            <Route exact path="/error">
-              <Anodiam404 />
-            </Route>
-            <Redirect to="/" />
-          </Switch>
-          <AnodiamFooter />
-        </PreferenceContextProvider>
+        <AnodiamHeader />
+        <Switch>
+          <Route exact path="/">
+            <AnodiamLogin />
+          </Route>
+          <Route exact path="/register">
+            <AnodiamRegister />
+          </Route>
+          <Route exact path="/buyCourses">
+            <AnodiamBuyCourses />
+          </Route>
+          <Route exact path="/profile">
+            <MyProfile />
+          </Route>
+          <Route exact path="/learning">
+            <MyLearning />
+          </Route>
+          <Route exact path="/about">
+            <AnodiamAbout />
+          </Route>
+          <Route exact path="/contact">
+            <AnodiamContact />
+          </Route>
+          <Route exact path="/error">
+            <Anodiam404 />
+          </Route>
+          <Redirect to="/" />
+        </Switch>
+        <AnodiamFooter />
       </AuthContextProvider>
     </Router>
   );

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from "../../contexts/AuthContext";
-import { PreferenceContext } from '../../contexts/PreferenceContext';
 import { useHistory } from "react-router";
 import { stopChange } from "../../utils/StopCutCopyPaste";
 import PageHeading from '../GenericComponents/PageHeading';
@@ -12,7 +11,6 @@ import { getUrl } from '../../utils/UrlUtils';
 
 const MyProfile = () => {
   const { auth } = useContext(AuthContext);
-  const { languageId } = useContext(PreferenceContext);
   const history = useHistory();
   if(auth===null) {
     history.push('/');
@@ -46,10 +44,9 @@ const MyProfile = () => {
       guardiansEmail,
       guardiansPhoneNumber,
       boardId,
-      levelId,
-      languageId
+      levelId
     });
-  }, [address, boardId, fullName, guardiansEmail, guardiansName, guardiansPhoneNumber, latitude, levelId, longitude, phoneNumber, languageId])
+  }, [address, boardId, fullName, guardiansEmail, guardiansName, guardiansPhoneNumber, latitude, levelId, longitude, phoneNumber])
   
   useEffect(() => {
     fetch(getProfileUrl, {

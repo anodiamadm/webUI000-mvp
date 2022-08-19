@@ -1,10 +1,29 @@
 #anodiam-footer {
-  background: #bfdfff;
-  padding: 50px;
+  background-image: url('footer.png');
+  background-repeat: repeat-x;
+  padding-top: 18px;
+  padding-bottom: 30px;
   margin: auto;
   text-align: center;
   font-size: small;
   height: auto;
   width: auto;
   min-width: 400px;
+  font-weight: 700;
+}
+#anodiam-footer a {
+  font-weight: 500;
+  color: #90979f;
+  text-decoration: none;
+}
+#anodiam-footer span {
+  font-weight: 700;
+  color: #90979f;
+}
+#anodiam-footer a:hover {
+  color: #00bfff;
+}
+.icon-decor{
+  color: #00bfff;
+  font-size: 24px;
 }

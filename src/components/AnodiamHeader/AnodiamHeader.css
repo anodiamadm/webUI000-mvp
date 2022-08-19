@@ -1,4 +1,5 @@
 .punch-line {
+  font-size: 16px;
   text-align: center;
   font-weight: 600;
   color: #fff;
@@ -6,6 +7,11 @@
 }
 .punch-line sup {
   font-size: small;
-  font-weight: 600;
+  font-weight: 400;
   color: #fff;
+}
+.anodiam-gradiant-background {
+  background-image: url('header.png');
+  background-repeat: repeat-x;
+  min-width: 400px;
 }
