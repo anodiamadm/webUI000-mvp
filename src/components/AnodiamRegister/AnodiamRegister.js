@@ -74,10 +74,16 @@ const AnodiamRegister = () => {
         body: JSON.stringify(requestData),
         signal: abortCont.signal,
       }).then(res => {
-        if(!res.ok) {
+        if (res.ok) {
+          // will succeed unless server logic or your logic is off
+          return res.json();
+        } else if (res.status === 400) {    //This block can be merged with
+          // will succeed if the server will always respond with JSON with a 400 response
+          return res.json();
+        } else {
+          // there was some other error in the response, such as status 500
           throw Error(res.status);
         }
-        return res.json();
       }).then(data => {
         setIsPending(false);
         setResponse({code:0, message:data.message});
