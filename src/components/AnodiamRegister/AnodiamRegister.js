@@ -75,18 +75,19 @@ const AnodiamRegister = () => {
         signal: abortCont.signal,
       }).then(res => {
         if(!res.ok) {
-          throw Error('HTTP Error: ' + res.status);
+          throw Error(res.status);
         }
         return res.json();
       }).then(data => {
         setIsPending(false);
-        setResponse(data);
+        setResponse({code:0, message:data.message});
+        console.log(`data = ${data.message}`);
       }).catch(err => {
         if(err.name === 'AbortError') {
           return () => abortCont.abort();
         } else {
-          const networkErr = `Registration system issue! ${err.message}`;
-          setResponse({code:406, message:networkErr});
+          const networkErr = `HTTP Error! ${err.message}`;
+          setResponse({code:err.message, message:networkErr});
         }
       }).finally(() => {
         setIsPending(false);
@@ -104,8 +105,8 @@ const AnodiamRegister = () => {
             <form className="anodiam-form" onSubmit={handleSubmit}>
               <div className="container anodiam-container">
                 
-                { (response.code===0) && <div className="success-message">{ response.message }</div> }
-                { (response.code>0) && <div className="mandatory">{ response.message }</div> }
+                { (response.code===200) && <div className="success-message">{ response.message }</div> }
+                { (response.code>0 && response.code!==200) && <div className="mandatory">{ response.message }</div> }
 
                 <label><span className="mandatory">*</span>&nbsp;First Name:</label>
                 <input
