@@ -63,6 +63,9 @@
 .success-message {
   color: #00ff1f;
 }
+.error-message {
+  color: #ff5f00;
+}
 .anodiam-form {
   max-width: 400px;
   margin: 0 auto;

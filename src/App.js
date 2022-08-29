@@ -17,7 +17,7 @@ const App = () => {
       <AuthContextProvider>
         <AnodiamHeader />
         <Switch>
-          <Route exact path="/">
+          <Route exact path="/login">
             <AnodiamLogin />
           </Route>
           <Route exact path="/register">
@@ -41,7 +41,7 @@ const App = () => {
           <Route exact path="/error">
             <Anodiam404 />
           </Route>
-          <Redirect to="/" />
+          <Redirect to="/login" />
         </Switch>
         <AnodiamFooter />
       </AuthContextProvider>
