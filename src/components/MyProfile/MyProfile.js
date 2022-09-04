@@ -50,6 +50,8 @@ const MyProfile = () => {
   
   useEffect(() => {
     fetch(getProfileUrl, {
+      crossDomain: true,
+      method: 'GET',
       headers: { 'Authorization': "Bearer " + auth }
     }).then(res => {
       if(!res.ok) {

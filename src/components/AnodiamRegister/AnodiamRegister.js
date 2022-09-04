@@ -68,7 +68,7 @@ const AnodiamRegister = () => {
       setIsPending(true);
       const abortCont = new AbortController();
       fetch(url, {
-        crossDomain:true,
+        crossDomain: true,
         method: 'PUT',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestData),

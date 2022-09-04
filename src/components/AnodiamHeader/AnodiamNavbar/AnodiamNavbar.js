@@ -21,7 +21,7 @@ const AnodiamNavbar = () => {
       </button>
       <div className="collapse navbar-collapse links" id="navbarSupportedContent">
         {
-          (auth===null) ?
+          (Object.entries(auth).length === 0) ?
             <ul className="navbar-nav">
               <li ><NavLink className="anodiam-nav-link" to="/" exact>Login</NavLink></li>
               <li ><NavLink className="anodiam-nav-link" to="/register" exact>Register</NavLink></li>

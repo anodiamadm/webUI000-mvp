@@ -1,10 +1,10 @@
-import { useHistory } from "react-router";
 import React, { useContext } from 'react';
 import { useState } from 'react';
 import { AuthContext } from "../../contexts/AuthContext";
 import { getUrl } from "../../utils/UrlUtils";
 import { stopChange } from "../../utils/StopCutCopyPaste";
 import AskForRegister from "../GenericComponents/AskForRegister";
+import MyProfile from '../MyProfile/MyProfile';
 import PageHeading from "../GenericComponents/PageHeading";
 import '../../../node_modules/font-awesome/css/font-awesome.min.css';
 import AnodiamTooltipBody from "../GenericComponents/AnodiamTooltipBody";
@@ -14,11 +14,9 @@ const AnodiamLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isPending, setIsPending] = useState(false);
-  const [error, setError] = useState(null);
-  let errFlag = false;
-  const history = useHistory();
+  const [error, setError] = useState('');
   const url = getUrl('loginUrl');
-  const { login } = useContext(AuthContext);
+  const { auth, login, logout } = useContext(AuthContext);
 
   const toggleShowHidePassword = (e) => {
     if(document.getElementById("password").type==="password") {
@@ -39,53 +37,55 @@ const AnodiamLogin = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsPending(true);
-    setError(null);
     const loginInfo = { email: username, password }
     const abortCont = new AbortController();
     
     fetch(url, {
+      crossDomain: true,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(loginInfo),
       signal: abortCont.signal
     }).then(res => {
-      if (res.ok || res.status===400) {
+      if (res.ok || res.status===400 || res.status===500) {
         return res.json();
       } else {
         throw Error(res.status);
       }
-    }).then(returnedAuth => {
-      login(returnedAuth.Bearer);
+    }).then(jsonData => {
       setIsPending(false);
+        if(jsonData.ok === true
+        && (jsonData.data.type==="Bearer")
+        && (jsonData.data.roles.includes("STUDENT"))){
+        login(jsonData);
+        setError('')
+      } else {
+        setError(`HTTP Error: ${jsonData.message}`);
+        logout();
+      }
     }).catch(err => {
       if(err.name === 'AbortError') {
         return () => abortCont.abort();
       } else {
         setError(`HTTP Error: ${err.message}`);
-        errFlag=true;
+        logout();
       }
     }).finally(() => {
       setIsPending(false);
-      if(errFlag===false) {
-        //  This needs to be BUY Courses going forward
-        history.push('/profile');
-        //  history.push('/buyCourses');
-      } else {
-        history.push('/');
-      }
     });
   };
 
   return (
     <div className="anodiam-container">
+      { (Object.entries(auth).length === 0) ?
       <div className="anodiam-body-panel">
         <PageHeading heading='Student Login' />
         <div className="anodiam-body-panel-mid">
           <form className="anodiam-form" onSubmit={handleSubmit}>
             <div className="container anodiam-container">
 
-              { error && <div className="mandatory">{ error }</div> }
-
+              { error!=='' && <div className="mandatory">{ error }</div> }
+             
               <label>Email:&nbsp;&nbsp;
               <AnodiamTooltipBody title="Your email address is used as your Anodiam username.">
               <i className="fa fa-question-circle anodiam-help-button"></i></AnodiamTooltipBody></label>
@@ -117,6 +117,7 @@ const AnodiamLogin = () => {
         </div>
         <AskForRegister/>
       </div>
+      : <MyProfile /> }
     </div>
   );
 }
