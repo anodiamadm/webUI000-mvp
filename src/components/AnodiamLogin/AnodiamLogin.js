@@ -9,7 +9,6 @@ import PageHeading from "../GenericComponents/PageHeading";
 import '../../../node_modules/font-awesome/css/font-awesome.min.css';
 import AnodiamTooltipBody from "../GenericComponents/AnodiamTooltipBody";
 import AnodiamGoogleLogin from './AnodiamGoogleLogin';
-import AnodiamGoogleLogout from './AnodiamGoogleLogout';
 
 const AnodiamLogin = () => {
 
@@ -119,7 +118,6 @@ const AnodiamLogin = () => {
         </div>
         <AskForRegister/>
         <AnodiamGoogleLogin/>
-        <AnodiamGoogleLogout/>
       </div>
       : <MyProfile /> }
     </div>
